@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RITU - Private Anonymous Offline-first</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#7a1c2e;--pink:#ffd6de;--light:#fff0f3;--dark:#2b0a12}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans','Noto Sans Devanagari',sans-serif}
+body{background:var(--light);color:var(--dark);overflow-x:hidden}
+.app{max-width:420px;margin:0 auto;min-height:100vh;background:var(--light);position:relative;box-shadow:0 0 30px rgba(122,28,46,0.15)}
+.screen{display:none;min-height:100vh;padding:20px 20px 90px 20px;animation:fade .4s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.btn-primary{background:var(--maroon);color:#fff;border:none;border-radius:18px;padding:14px 20px;width:100%;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 6px 14px rgba(122,28,46,0.25)}
+.card{background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 16px rgba(122,28,46,0.08);margin-bottom:14px;border:1px solid #ffe1e7}
+.lotus{width:72px;height:72px;margin:0 auto;display:block}
+.pill{border:1.5px solid var(--maroon);border-radius:30px;padding:12px;text-align:center;margin:10px 0;cursor:pointer;background:#fff;transition:.2s}
+.pill.active,.pill:hover{background:var(--maroon);color:#fff}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.sidebar{position:fixed;top:0;left:-100%;width:78%;max-width:320px;height:100vh;background:#fff;z-index:99;transition:.35s;padding:20px;box-shadow:10px 0 30px rgba(0,0,0,.2)}
+.sidebar.open{left:0}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:98}
+.overlay.show{display:block}
+.badge{font-size:11px;padding:4px 8px;border-radius:20px;background:var(--pink)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.small{font-size:12px;opacity:.7}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+.cal div{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:13px;background:#fff;border:1px solid #ffe1e7}
+.cal .period{background:var(--maroon);color:#fff}
+.cal .fertile{background:#ff8a65;color:#fff}
+.cal .safe{background:#a5d6a7;color:#1b5e20}
+.cal .risk{background:#e0e0e0}
+.chat-bubble{max-width:85%;padding:12px 14px;border-radius:18px 18px 18px 4px;background:#fff;border:1px solid #ffe1e7;margin:8px 0}
+.chat-user{margin-left:auto;background:var(--maroon);color:#fff;border-radius:18px 18px 4px 18px}
+.slider-wrap{display:flex;align-items:center;gap:12px;margin:12px 0}
+input[type=range]{flex:1;accent-color:var(--maroon)}
+.bottom-nav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);width:90%;max-width:380px;background:#fff;border-radius:24px;display:flex;justify-content:space-around;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:10}
+.bn-item{flex:1;text-align:center;padding:8px;border-radius:16px;cursor:pointer;font-size:12px}
+.bn-item.active{background:var(--maroon);color:#fff}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="screen active" id="s1">
+  <div style="margin-top:60px;text-align:center">
+    <svg class="lotus" viewBox="0 0 64 64"><path fill="#7a1c2e" d="M32 8 C24 18 12 24 12 36 C12 46 20 54 32 58 C44 54 52 46 52 36 C52 24 40 18 32 8 Z M32 14 C36 20 44 26 44 36 C44 42 40 48 32 52 C24 48 20 42 20 36 C20 26 28 20 32 14 Z"/></svg>
+    <h1 style="font-size:56px;color:var(--maroon);letter-spacing:4px;margin-top:14px">RITU</h1>
+    <p style="margin-top:6px;font-weight:700">Private • Anonymous • Offline-first</p>
+    <p class="small" style="margin-top:12px;line-height:1.4">No data goes to internet. No login needed.<br>तुम्हारा डेटा सिर्फ तुम्हारे फोन में।</p>
+    <div style="margin-top:30px" class="card"><p class="small">✓ No tracking ✓ No email needed ✓ Works without internet</p></div>
+    <button class="btn-primary" style="margin-top:24px" onclick="go(2)">Get Started • शुरू करें</button>
+    <p class="small" style="margin-top:10px">Swasth Beti, Swasth Rajasthan</p>
+  </div>
+</div>
+
+<div class="screen" id="s2">
+  <h2>Language • भाषा</h2>
+  <h3 style="margin-top:16px">Har Beti Har Bhasha</h3>
+  <p class="small">Choose your preferred language to continue</p>
+  <p class="small">Har Data Surakshit, Har Padav</p>
+  <div class="pill active" data-lang="hi" onclick="setLang(this,'hi')">हिंदी • Hindi 😊</div>
+  <div class="pill" data-lang="en" onclick="setLang(this,'en')">English • English</div>
+  <div class="pill" data-lang="mrw" onclick="setLang(this,'mrw')">मारवाड़ी • Marwadi</div>
+  <div class="card" style="margin-top:16px;background:var(--pink)"><b>Why Marwadi?</b><br><span class="small">First menstrual app with Marwadi for rural Rajasthan girls of Pali.</span></div>
+  <button class="btn-primary" style="margin-top:20px" onclick="go(3)">Continue →</button>
+</div>
+
+<div class="screen" id="s3">
+  <h2>About You</h2>
+  <p class="small">This stays private & offline on your device</p>
+  <div class="card" style="margin-top:16px">
+    <b>Your Age</b> <span class="badge">12 - 49 years</span>
+    <div class="slider-wrap">
+      <button onclick="ageCh(-1)">-</button>
+      <input type="range" min="12" max="49" value="22" id="ageRange" oninput="document.getElementById('ageVal').innerText=this.value">
+      <button onclick="ageCh(1)">+</button>
+      <b id="ageVal" style="min-width:30px">22</b>
+    </div>
+    <p class="small">Slider upto 49 as you requested - covers adolescent to perimenopause</p>
+  </div>
+  <div class="card">
+    <b>Last Period Date</b>
+    <input type="date" id="lastDate" value="2024-03-12" style="width:100%;padding:10px;border-radius:12px;border:1px solid #ffd6de;margin-top:8px">
+    <p class="small" style="margin-top:6px">You can change this anytime • Offline</p>
+  </div>
+  <button class="btn-primary" onclick="go(4)">Next → Save Offline</button>
+</div>
+
+<div class="screen" id="s4">
+  <div class="topbar"><h3>Period Details</h3><span onclick="go(5)" style="cursor:pointer">✕</span></div>
+  <div class="card">
+    <b>When did your last bleeding start?</b>
+    <input type="date" value="2024-03-12" style="width:100%;padding:10px;border-radius:12px;border:1px solid #ffd6de;margin-top:8px">
+    <b style="display:block;margin-top:14px">How many days did it last?</b>
+    <div class="slider-wrap"><button onclick="durCh(-1)">-</button><span id="dur">5 days</span><button onclick="durCh(1)">+</button></div>
+    <p class="small">Custom: 2-4 days short, 5-7 normal, 25+ long? Select here.</p>
+  </div>
+  <div class="card">
+    <b>Any abnormality? (Optional)</b>
+    <p class="small">You wrote: dense, heavy, last period optional</p>
+    <div class="pill">Heavy bleeding</div>
+    <div class="pill">Severe cramps</div>
+    <div class="pill">Spotting between periods</div>
+    <div class="pill">Dense clots</div>
+    <p class="small">All data is stored offline • Private</p>
+  </div>
+  <button class="btn-primary" onclick="go(5)">Save Details → Dashboard</button>
+</div>
+
+<div class="screen" id="s5">
+  <div class="topbar">
+    <span onclick="toggleSide(true)" style="font-size:22px;cursor:pointer">☰</span>
+    <span class="badge">Offline</span>
+    <span onclick="alert('Daily notification: On\nEarly red flag alert: On')" style="cursor:pointer">🔔</span>
+  </div>
+  <h2>Namaste Saheli 👋</h2>
+  <p class="small">Wednesday, 13 Mar • Offline • Pali, Rajasthan</p>
+  <div class="card" style="background:var(--pink);margin-top:12px">
+    <div style="display:flex;gap:10px">
+      <div style="font-size:36px">👧🏽</div>
+      <div><b>Today's Inspiring Girl</b><br><span class="small">Rani from Rajasthan • Age 19 • Village Health Advocate<br>“Small steps today lead to healthy tomorrow”</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <b>Today's Quote</b><br>
+    <i class="small">"Your body, your rhythm. You are heard, you are safe."<br>तू शेरनी है, अपनी सेहत की रखवाली खुद कर।</i>
+  </div>
+  <div class="grid2">
+    <div class="card" style="background:var(--maroon);color:#fff;cursor:pointer" onclick="go(6)"><div style="font-size:24px">🩸</div><b>My Cycle</b><br><span class="small" style="color:#ffd6de">Safe/Risk days, pad alert</span></div>
+    <div class="card" style="cursor:pointer" onclick="go(7)"><div style="font-size:24px">📖</div><b>Gyaan</b><br><span class="small">Myths vs Facts</span></div>
+    <div class="card" style="cursor:pointer" onclick="go(8)"><div style="font-size:24px">💬</div><b>Ask Didi</b><br><span class="small">Offline Q&A, mood support</span></div>
+    <div class="card" style="cursor:pointer" onclick="go(9)"><div style="font-size:24px">📍</div><b>ASHA Connect</b><br><span class="small">Nearby help, helpline</span></div>
+  </div>
+  <div class="card" style="background:#fff3cd"><b>⚠️ Risk days alert (from your paper)</b><br><span class="small">On risk days: quotes + alerts about pads taken & general awareness for 5-7 days to avoid heavy outdoor work, stay hydrated.</span></div>
+</div>
+
+<div class="screen" id="s6">
+  <h3>Cycle Calendar • Final Cycle</h3>
+  <div style="display:flex;gap:6px;margin-top:10px"><span class="badge" style="background:var(--maroon);color:#fff">Period days</span><span class="badge" style="background:#ff8a65;color:#fff">Fertile</span><span class="badge" style="background:#a5d6a7">Safe</span><span class="badge">Risk</span></div>
+  <div class="cal" id="cal"></div>
+  <div class="card" style="margin-top:12px"><b>Next period ~ 9 Apr • Fertile window: 24-27 Mar</b><br><span class="small">Present calendar + safe period + risk period mapping as per your paper.</span></div>
+  <div class="card" style="background:var(--pink)">On risk days: Pad taken? Outdoor avoid alert → "Aaj pad leke jana, bhaari kaam se bache"</div>
+  <button class="btn-primary" onclick="go(5)">Back to Home</button>
+</div>
+
+<div class="screen" id="s7">
+  <h3>Gyaan • Myths vs Facts</h3>
+  <div class="card"><b>MYTH:</b> Period me kitchen me nahi jaana chahiye<br><b>FACT:</b> Ye purani soch hai, exercise aur normal kaam se dard kam hota hai.</div>
+  <div class="card"><b>MYTH:</b> Thanda paani se period ruk jaata hai<br><b>FACT:</b> Nahi, balanced diet aur paani peena zaroori hai.</div>
+  <div class="card"><b>Pad Hygiene</b><br><span class="small">Har 6 ghante pad badlo, general awareness during 5-7 days.</span></div>
+  <button class="btn-primary" onclick="go(5)">Back</button>
+</div>
+
+<div class="screen" id="s8">
+  <h3>Ask Didi • AI Assistant • Offline Q&A</h3>
+  <p class="small">You wrote: gets notified about early red flag, AC to possible detection but safe version - supportive, not diagnosis. Connect with mood.</p>
+  <div style="margin-top:12px" id="chatBox">
+    <div class="chat-bubble chat-user">What helps with period pain?</div>
+    <div class="chat-bubble"><b>Ask Didi</b><br>For period cramps, try:<br>• Warm compress on lower belly<br>• Gentle movement or stretching<br>• Stay hydrated & rest.<br>If pain is severe, consult ASHA worker or doctor.</div>
+    <div class="chat-bubble chat-user">Is it normal to have irregular cycles?</div>
+    <div class="chat-bubble">Yes, irregular cycles can happen due to stress, diet, or sleep. Track for 2-3 months. If continues >3 months, speak to ASHA or health worker. History with bleeding days saved offline.</div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:14px"><input id="qInput" placeholder="Ask anything... (offline)" style="flex:1;padding:12px;border-radius:20px;border:1px solid #ffd6de"><button class="btn-primary" style="width:50px" onclick="ask()">→</button></div>
+</div>
+
+<div class="screen" id="s9">
+  <h3>ASHA Connect • Nearby support • Offline map</h3>
+  <div class="card"><div style="height:120px;background:#e8f5e9;border-radius:12px;display:flex;align-items:center;justify-content:center">🗺️ ASHA Center • 1.2 km<br>Health Sub Center 3.5 km<br>Pali, Rajasthan Map (offline)</div></div>
+  <div class="card"><b>Helpline Numbers</b><br>
+  <div style="display:flex;justify-content:space-between;margin-top:8px"><span>📞 Women Helpline • 181</span><button onclick="alert('Calling 181')">Call</button></div>
+  <div style="display:flex;justify-content:space-between;margin-top:8px"><span>🚑 Emergency • 108</span><button onclick="alert('Calling 108')">Call</button></div>
+  <p class="small" style="margin-top:8px">Local ASHA: Suman Devi • +91 98xxx-xxxxx • Available 9am-5pm<br>Calls work without internet • Saved for offline</p>
+  </div>
+  <div class="card" style="background:var(--pink)"><b>Connect Help - From your paper:</b><br><span class="small">✓ Connect ASHA ✓ Nearby health centre ✓ Gets notified about early red flag ✓ History continuity</span></div>
+  <button class="btn-primary" onclick="go(5)">Back to Dashboard</button>
+</div>
+
+<div class="sidebar" id="side">
+  <h3>☰ Menu</h3>
+  <div style="margin-top:16px">
+    <div class="card"><b>⚙️ Settings</b><br><span class="small">Font Size (you wrote setting font, text size)</span><br><button onclick="document.body.style.fontSize='18px'">Large</button> <button onclick="document.body.style.fontSize='14px'">Small</button></div>
+    <div class="card"><b>🔔 Notification</b><br><span class="small">Gets notification too, Daily notification about early red flag</span><br>Daily Quote: <input type="checkbox" checked> On<br>Early red flag: <input type="checkbox" checked> On</div>
+    <div class="card"><b>📊 History</b><br><span class="small">History with bleeding days continuity - last year</span><br>Last 3: 12 Mar (5 days), 10 Feb (4 days), 12 Jan (5 days)</div>
+    <div class="card"><b>🔒 Privacy Center</b><br><span class="small">Private Anonymous Offline-first • Delete all data • No cloud</span></div>
+  </div>
+  <button class="btn-primary" onclick="toggleSide(false)">Close</button>
+</div>
+<div class="overlay" id="over" onclick="toggleSide(false)"></div>
+
+<div class="bottom-nav">
+  <div class="bn-item active" onclick="go(5)">🏠<br>Home</div>
+  <div class="bn-item" onclick="go(6)">📅<br>Calendar</div>
+  <div class="bn-item" onclick="go(8)">💬<br>Ask Didi</div>
+  <div class="bn-item" onclick="go(9)">📍<br>ASHA</div>
+</div>
+
+</div>
+<script>
+let current=1;
+function go(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('s'+n).classList.add('active');current=n;window.scrollTo(0,0);}
+function setLang(el,lang){document.querySelectorAll('[data-lang]').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
+function toggleSide(o){document.getElementById('side').classList.toggle('open',o);document.getElementById('over').classList.toggle('show',o);}
+function ageCh(d){let r=document.getElementById('ageRange');r.value=Math.min(49,Math.max(12,parseInt(r.value)+d));document.getElementById('ageVal').innerText=r.value;}
+let durVal=5;function durCh(d){durVal=Math.min(10,Math.max(2,durVal+d));document.getElementById('dur').innerText=durVal+' days';}
+function ask(){let i=document.getElementById('qInput');let box=document.getElementById('chatBox');if(!i.value) return;let c=document.createElement('div');c.className='chat-bubble chat-user';c.innerText=i.value;box.appendChild(c);let r=document.createElement('div');r.className='chat-bubble';r.innerHTML='<b>Ask Didi</b><br>Ye sawaal important hai. Offline fixed reply: Warm water se sikai karo, paani piyo, agar 3 din se jyada takleef hai to ASHA didi se milo. Mood low lag raha hai to ek dost se baat karo.';box.appendChild(r);i.value='';}
+(function buildCal(){let cal=document.getElementById('cal');for(let i=1;i<=31;i++){let d=document.createElement('div');d.innerText=i;if([4,12,15].includes(i)) d.className='period';else if([13,14].includes(i)) d.className='fertile';else if([24,25,26].includes(i)) d.className='safe';else if([27,28].includes(i)) d.className='risk';cal.appendChild(d);}})();
+</script>
+</body>
+</html>
