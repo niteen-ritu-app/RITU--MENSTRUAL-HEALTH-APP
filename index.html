@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RITU - Private Anonymous Offline-first</title>
+<title>RITU - Private Anonymous Offline-first</title> 
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e91e63"> 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{--maroon:#7a1c2e;--pink:#ffd6de;--light:#fff0f3;--dark:#2b0a12}
@@ -207,6 +209,9 @@ function ageCh(d){let r=document.getElementById('ageRange');r.value=Math.min(49,
 let durVal=5;function durCh(d){durVal=Math.min(10,Math.max(2,durVal+d));document.getElementById('dur').innerText=durVal+' days';}
 function ask(){let i=document.getElementById('qInput');let box=document.getElementById('chatBox');if(!i.value) return;let c=document.createElement('div');c.className='chat-bubble chat-user';c.innerText=i.value;box.appendChild(c);let r=document.createElement('div');r.className='chat-bubble';r.innerHTML='<b>Ask Didi</b><br>Ye sawaal important hai. Offline fixed reply: Warm water se sikai karo, paani piyo, agar 3 din se jyada takleef hai to ASHA didi se milo. Mood low lag raha hai to ek dost se baat karo.';box.appendChild(r);i.value='';}
 (function buildCal(){let cal=document.getElementById('cal');for(let i=1;i<=31;i++){let d=document.createElement('div');d.innerText=i;if([4,12,15].includes(i)) d.className='period';else if([13,14].includes(i)) d.className='fertile';else if([24,25,26].includes(i)) d.className='safe';else if([27,28].includes(i)) d.className='risk';cal.appendChild(d);}})();
-</script>
+</script> 
+ <script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
+</script> 
 </body>
 </html>
