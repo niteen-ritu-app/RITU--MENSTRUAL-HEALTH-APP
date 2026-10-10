@@ -63,8 +63,8 @@ input[type=range]{flex:1;accent-color:var(--maroon)}
   <h3 style="margin-top:16px">Har Beti Har Bhasha</h3>
   <p class="small">Choose your preferred language to continue</p>
   <p class="small">Har Data Surakshit, Har Padav</p>
-  <div class="pill active" data-lang="hi" onclick="setLang(this,'hi')">हिंदी • Hindi 😊</div>
-  <div class="pill" data-lang="en" onclick="setLang(this,'en')">English • English</div>
+  <div class="pill  data-lang="hi" onclick="setLang(this,'hi')">हिंदी • Hindi 😊</div>
+  <div class="pill active" data-lang="en" onclick="setLang(this,'en')">English • English</div>
   <div class="pill" data-lang="mrw" onclick="setLang(this,'mrw')">मारवाड़ी • Marwadi</div>
   <div class="card" style="margin-top:16px;background:var(--pink)"><b>Why Marwadi?</b><br><span class="small">First menstrual app with Marwadi for rural Rajasthan girls of Pali.</span></div>
   <button class="btn-primary" style="margin-top:20px" onclick="go(3)">Continue →</button>
@@ -203,7 +203,7 @@ input[type=range]{flex:1;accent-color:var(--maroon)}
 <script>
 let current=1;
 function go(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('s'+n).classList.add('active');current=n;window.scrollTo(0,0);}
-function setLang(el,lang){document.querySelectorAll('[data-lang]').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
+function setLang(el,lang) {let real =lang ; if (lang==='mrw') real='hi';document.querySelectorAll('[data-lang]').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
 function toggleSide(o){document.getElementById('side').classList.toggle('open',o);document.getElementById('over').classList.toggle('show',o);}
 function ageCh(d){let r=document.getElementById('ageRange');r.value=Math.min(49,Math.max(12,parseInt(r.value)+d));document.getElementById('ageVal').innerText=r.value;}
 let durVal=5;function durCh(d){durVal=Math.min(10,Math.max(2,durVal+d));document.getElementById('dur').innerText=durVal+' days';}
